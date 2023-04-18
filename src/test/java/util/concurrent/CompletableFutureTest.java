@@ -53,10 +53,19 @@ public class CompletableFutureTest {
 
     @Test
     public void exceptionalTest() {
-        CompletableFuture<String> f4 = failureF1.exceptionallyCompose(err -> {
+        CompletableFuture<String> f4 = failureF1.exceptionallyComposeAsync(err -> {
             System.out.println(err);
-            return failureF2;
-        });
+            return successF1;
+        }, ThreadUtil.newExecutor());
+        System.out.println(f4.join());
+    }
+
+    @Test
+    public void exceptionallyAsyncTest() {
+        CompletableFuture<String> f4 = failureF1.exceptionallyAsync(err -> {
+            System.out.println(err);
+            return successF1;
+        }, ThreadUtil.newExecutor());
         System.out.println(f4.join());
     }
 
